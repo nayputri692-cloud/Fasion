@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrendWear Store</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#f5f5f5;
+}
+
+nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 40px;
+    background:black;
+    color:white;
+}
+
+nav ul{
+    display:flex;
+    list-style:none;
+    gap:20px;
+}
+
+nav li{
+    cursor:pointer;
+}
+
+.cart-icon{
+    cursor:pointer;
+}
+
+.hero{
+    text-align:center;
+    padding:60px;
+    background:linear-gradient(to right,#000,#444);
+    color:white;
+}
+
+.produk{
+    padding:40px;
+    text-align:center;
+}
+
+.card-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:20px;
+    margin-top:20px;
+}
+
+.card{
+    background:white;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:scale(1.05);
+}
+
+.card img{
+    width:100%;
+    height:200px;
+    object-fit:cover;
+    border-radius:10px;
+}
+
+button{
+    margin-top:10px;
+    padding:10px;
+    border:none;
+    background:black;
+    color:white;
+    cursor:pointer;
+    border-radius:5px;
+}
+
+.cart{
+    position:fixed;
+    right:0;
+    top:80px;
+    width:300px;
+    background:white;
+    padding:20px;
+    box-shadow:-2px 0 10px rgba(0,0,0,0.2);
+    height:100%;
+    overflow:auto;
+}
+
+.cart ul{
+    list-style:none;
+}
+
+.checkout{
+    margin-top:15px;
+}
+
+.checkout a{
+    display:block;
+    margin:5px 0;
+    text-decoration:none;
+    background:#25D366;
+    color:white;
+    padding:10px;
+    border-radius:5px;
+}
+
+.checkout a.instagram{
+    background:#E4405F;
+}
+
+.checkout a.email{
+    background:#333;
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+<h2>TrendWear</h2>
+<ul>
+<li>Home</li>
+<li>Pria</li>
+<li>Wanita</li>
+</ul>
+<div class="cart-icon">🛒 <span id="count">0</span></div>
+</nav>
+
+<section class="hero">
+<h1>TrendWear 2026</h1>
+<p>Fashion Pria & Wanita Kekinian 🔥</p>
+</section>
+
+<section class="produk">
+<h2>Produk Kami</h2>
+<div class="card-container">
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab">
+<h3>Kaos Oversize</h3>
+<p>45000</p>
+<button onclick="addToCart('Kaos Oversize',45000)">Beli</button>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b">
+<h3>Hoodie Streetwear</h3>
+<p>95000</p>
+<button onclick="addToCart('Hoodie Streetwear',95000)">Beli</button>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b">
+<h3>Dress Casual</h3>
+<p>85000</p>
+<button onclick="addToCart('Dress Casual',85000)">Beli</button>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d">
+<h3>Blouse Stylish</h3>
+<p>70000</p>
+<button onclick="addToCart('Blouse Stylish',70000)">Beli</button>
+</div>
+
+</div>
+</section>
+
+<div class="cart">
+<h3>Keranjang 🛒</h3>
+<ul id="cart-items"></ul>
+<h4>Total: Rp <span id="total">0</span></h4>
+
+<div class="checkout">
+<h4>Pesan via:</h4>
+<a id="wa" target="_blank">WhatsApp</a>
+<a id="ig" class="instagram" target="_blank">Instagram</a>
+<a id="email" class="email">Email</a>
+</div>
+
+</div>
+
+<script>
+let cart = [];
+
+function addToCart(nama,harga){
+    cart.push({nama,harga});
+    updateCart();
+}
+
+function updateCart(){
+    let list = document.getElementById("cart-items");
+    let total = 0;
+    list.innerHTML = "";
+
+    cart.forEach(item=>{
+        let li = document.createElement("li");
+        li.innerText = item.nama + " - Rp " + item.harga;
+        list.appendChild(li);
+        total += item.harga;
+    });
+
+    document.getElementById("total").innerText = total;
+    document.getElementById("count").innerText = cart.length;
+
+    generateLinks(total);
+}
+
+function generateLinks(total){
+    let pesan = "Halo, saya ingin pesan:%0A";
+    cart.forEach(item=>{
+        pesan += "- " + item.nama + " (Rp " + item.harga + ")%0A";
+    });
+    pesan += "Total: Rp " + total;
+
+    document.getElementById("wa").href = "https://wa.me/6281234567890?text=" + pesan;
+
+    document.getElementById("ig").href = "https://instagram.com/yourstore";
+
+    document.getElementById("email").href = "mailto:youremail@gmail.com?subject=Order TrendWear&body=" + pesan;
+}
+</script>
+
+</body>
+</html>
